@@ -1,16 +1,15 @@
 package com.sirekanyan.andersrobot
 
-import com.sirekanyan.andersrobot.command.CityCommand
-import com.sirekanyan.andersrobot.command.Command
-import com.sirekanyan.andersrobot.command.LocationCommand
-import com.sirekanyan.andersrobot.command.RegexCommand
+import com.sirekanyan.andersrobot.command.*
 import com.sirekanyan.andersrobot.config.Config
 import com.sirekanyan.andersrobot.config.ConfigKey.*
 import com.sirekanyan.andersrobot.extensions.logError
 import com.sirekanyan.andersrobot.extensions.logInfo
 import org.telegram.telegrambots.bots.DefaultAbsSender
 import org.telegram.telegrambots.bots.DefaultBotOptions
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault
 import org.telegram.telegrambots.meta.generics.LongPollingBot
 import org.telegram.telegrambots.util.WebhookUtils
 
@@ -30,10 +29,22 @@ private val secondaryCommands: List<Command> =
         RegexCommand("\\b(celsi|цельси)", Controller::onCelsiusCommand),
         RegexCommand("\\b((андерс|anders|погод[аеуы])\\b|градус)", Controller::onWeatherCommand),
     )
+private val help = listOf(
+    HelpDescription("/temp", "What's the temperature outside?", "Сколько градусов за окном?"),
+    HelpDescription("/add", "Add city", "Добавить город"),
+    HelpDescription("/delete", "Delete city", "Удалить город"),
+    HelpDescription("/forecast", "Weather forecast", "Прогноз погоды"),
+)
 
 class AndersRobot : DefaultAbsSender(DefaultBotOptions()), LongPollingBot {
 
     private val factory = ControllerFactory()
+
+    init {
+        val scope = BotCommandScopeDefault.builder().build()
+        execute(SetMyCommands(help.map(HelpDescription::ruCommand), scope, "ru"))
+        execute(SetMyCommands(help.map(HelpDescription::enCommand), scope, null))
+    }
 
     override fun getBotUsername(): String = botName
 
