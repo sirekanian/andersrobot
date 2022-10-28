@@ -4,6 +4,7 @@ import com.sirekanyan.andersrobot.config.Config
 import com.sirekanyan.andersrobot.config.ConfigKey.WEATHER_API_KEY
 import io.ktor.client.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
@@ -18,7 +19,7 @@ class WeatherApi {
 
     private val httpClient = HttpClient()
     private val apiKey = Config[WEATHER_API_KEY]
-    private val comparator = compareBy<Weather> { it.sys.country.toLowerCase().replace("ru", "aa") }.thenBy { it.name }
+    private val comparator = compareBy<Weather> { it.sys.country.lowercase().replace("ru", "aa") }.thenBy { it.name }
 
     fun getWeather(city: String, language: String?): Weather? = runBlocking {
         println("getting $city")
@@ -58,7 +59,7 @@ class WeatherApi {
                 }
                 parameter("units", "metric")
                 parameter("appid", apiKey)
-            }
+            }.bodyAsText()
             val json = Json { ignoreUnknownKeys = true }
             json.decodeFromString(response)
         } catch (ex: Exception) {

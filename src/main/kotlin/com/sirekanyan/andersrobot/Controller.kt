@@ -12,7 +12,7 @@ import com.sirekanyan.andersrobot.image.generateImage
 import com.sirekanyan.andersrobot.image.plotForecast
 import com.sirekanyan.andersrobot.repository.CityRepository
 import com.sirekanyan.andersrobot.repository.supportedLanguages
-import jetbrains.letsPlot.export.ggsave
+import org.jetbrains.letsPlot.export.ggsave
 import org.telegram.telegrambots.meta.api.objects.Location
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
