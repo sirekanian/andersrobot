@@ -32,25 +32,20 @@ application {
     }
 }
 
+distributions {
+    main {
+        contents {
+            from("bot.properties")
+            from("data") { into("data") }
+        }
+    }
+}
+
 tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
             allWarningsAsErrors = true
-        }
-    }
-    jar {
-        manifest.attributes["Main-Class"] = "com.sirekanyan.andersrobot.Main"
-        from(configurations.runtimeClasspath.get().map(::zipTree))
-        doLast {
-            File("bot").also { file ->
-                file.createNewFile()
-                file.setExecutable(true)
-                file.printWriter().use { writer ->
-                    writer.println("#!/usr/bin/env sh")
-                    writer.println("java -jar ${archiveFileName.get()} \"$@\"")
-                }
-            }
         }
     }
 }
