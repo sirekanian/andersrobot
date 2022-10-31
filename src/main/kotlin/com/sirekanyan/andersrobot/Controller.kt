@@ -20,7 +20,7 @@ import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
 
-private const val DEFAULT_CITY_ID = 524901L // Moscow
+private const val DEFAULT_CITY_ID = 616052L // Yerevan
 
 class Controller(
     private val api: WeatherApi,
