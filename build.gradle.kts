@@ -2,6 +2,7 @@ plugins {
     val kotlinVersion = "1.7.20"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
+    id("org.sirekanyan.version-checker") version "1.0.0"
     application
 }
 
